@@ -1,42 +1,44 @@
 # IMAS
-Integrative Multiomic Augmentation System for target-specific regulatory dependency reconstruction
+
+## Integrative Multiomic Augmentation System for target-specific regulatory dependency reconstruction
 
 IMAS is a matched tumour multiomic foundation and target-adaptation framework for recovering compact, interpretable and dataset-specific regulatory architectures from single-cell data.
 
-The framework learns transferable relationships among genes, transcription factors (TFs) and regulatory elements (REs) from matched single-cell RNA and chromatin-accessibility profiles. It then adapts this information to a target dataset while preserving the observed expression matrix. The resulting multi-layer target dependencies (MLTDs) integrate molecular, regulatory, communication, temporal and perturbation-sensitive evidence for mechanism prioritisation.
+The framework learns transferable relationships among genes, transcription factors (TFs) and regulatory elements (REs) from matched single-cell RNA and chromatin-accessibility profiles. It then adapts this regulatory structure to a target dataset while preserving the observed expression matrix. The resulting **multi-layer target dependencies (MLTDs)** integrate molecular, regulatory, communication, temporal and perturbation-sensitive evidence for mechanism prioritisation.
 
 This repository accompanies the manuscript:
 
-Matched tumour multiomics resolves perturbation-sensitive regulationDeyang Wu, Takashi Yamashiro and Toshihiro Inubushi
+> **Matched tumour multiomics resolves perturbation-sensitive regulation**  
+> Deyang Wu, Takashi Yamashiro and Toshihiro Inubushi
 
-Overview
+---
 
-Single-cell RNA-sequencing datasets provide broad cellular coverage but do not directly observe regulatory-element usage in the same cells. IMAS addresses this limitation through two linked stages:
+## Overview
 
-Matched multiomic foundation learningA pan-cancer foundation is trained exclusively on paired single-cell RNA–ATAC measurements. The model learns direction-aware relationships among genes, TFs and REs in a common typed feature space.
+Single-cell RNA-sequencing datasets provide broad cellular coverage but do not directly observe regulatory-element usage in the same cells. IMAS addresses this limitation through two linked stages.
 
-Target-aware adaptationThe frozen foundation is adapted to a target dataset using low-rank updates, group-aware correction and task-specific residual refinement. The measured target expression matrix is not replaced or imputed.
+1. **Matched multiomic foundation learning**  
+   A pan-cancer foundation is trained exclusively on paired single-cell RNA–ATAC measurements. The model learns direction-aware relationships among genes, TFs and REs in a shared typed feature space.
 
-The adapted outputs are organized as MLTDs, which support downstream analyses including:
+2. **Target-aware adaptation**  
+   The frozen foundation backbone is adapted to a target dataset using low-rank updates, group-aware correction and task-specific refinement. The measured target expression matrix is retained unchanged.
 
-RNA–TF dependency inference
+The adapted outputs are organised as MLTDs and support:
 
-RNA–RE and TF–RE support reconstruction
+- RNA–TF dependency inference;
+- RNA–RE and TF–RE support reconstruction;
+- RNA–TF–RE bridge analysis;
+- receiver-aware cell–cell communication;
+- GNN–LTC communication pseudotime;
+- target-centred virtual perturbation;
+- perturbation-field and edge-flux analysis;
+- dataset-specific mechanism prioritisation.
 
-RNA–TF–RE bridge analysis
+---
 
-receiver-aware cell–cell communication
+## Conceptual workflow
 
-GNN–LTC communication pseudotime
-
-target-centred virtual perturbation
-
-perturbation-field and edge-flux analysis
-
-dataset-specific mechanism prioritisation
-
-Conceptual workflow
-
+```text
 Matched single-cell RNA–ATAC datasets
                 │
                 ▼
@@ -65,125 +67,106 @@ Multi-layer target dependencies
                 ├── cell–cell communication
                 ├── GNN–LTC communication pseudotime
                 └── virtual perturbation and field/flux analysis
+```
 
-Main features
+---
 
-Matched multiomic foundation
+## Main features
+
+### Matched multiomic foundation
 
 The foundation model is trained on a pan-cancer corpus of matched RNA–ATAC datasets. In the accompanying study, the unified corpus contains:
 
-48 matched single-cell multiomic datasets
-
-24 tumour groups
-
-approximately 2 million paired cells
-
-33,373 genes
-
-a global RE vocabulary of approximately 28.7 million intervals
+- 48 matched single-cell multiomic datasets;
+- 24 tumour groups;
+- approximately 2 million paired cells;
+- 33,373 genes;
+- a global RE vocabulary of approximately 28.7 million intervals.
 
 Genes, TFs and REs are represented as separate typed entities. Direction-specific embeddings distinguish source and destination roles for each relation.
 
-Target-aware adaptation
+### Target-aware adaptation
 
 The adaptation framework:
 
-freezes the pan-cancer foundation backbone;
+- freezes the pan-cancer foundation backbone;
+- applies rank-32 target-specific low-rank updates;
+- assigns target cells to group-aware state summaries;
+- preserves the measured RNA state through gene-retrieval supervision;
+- derives TF-response supervision from target-gene activity;
+- optionally refines selected REs when matched chromatin-derived gene activity is available;
+- uses an independent validation partition for checkpoint selection.
 
-applies rank-32 target-specific low-rank updates;
-
-assigns target cells to group-aware state summaries;
-
-preserves the measured RNA state through gene-retrieval supervision;
-
-derives TF-response supervision from target-gene activity;
-
-optionally refines selected REs when matched chromatin-derived gene activity is available;
-
-uses an independent validation partition for checkpoint selection.
-
-Multi-layer target dependencies
+### Multi-layer target dependencies
 
 Each MLTD stores complementary support components for a directed relationship:
 
+```text
 prior support
 representation support
 communication support
 temporal support
 perturbation field / flux support
+```
 
 MLTD scores are comparative support values rather than calibrated probabilities. They should not be interpreted as direct measurements of TF binding, signalling, chronological time or causal intervention effects.
 
-Receiver-aware communication
+### Receiver-aware communication
 
 Cell–cell communication analysis combines:
 
-ligand–receptor expression;
+- ligand–receptor expression;
+- interaction confidence;
+- sender-side molecular support;
+- receiver-side receptor–TF support;
+- independent TF–RE evidence;
+- permutation-based significance estimation.
 
-interaction confidence;
-
-sender-side molecular support;
-
-receiver-side receptor–TF support;
-
-independent TF–RE evidence;
-
-permutation-based significance estimation.
-
-GNN–LTC communication pseudotime
+### GNN–LTC communication pseudotime
 
 GNN–LTC orders cell states according to sender activity, receiver response and downstream TF context. It is a model-derived communication ordering rather than developmental or transcriptomic pseudotime.
 
-Virtual perturbation
+### Virtual perturbation
 
 Target-centred virtual perturbation is performed on a fixed directed MLTD graph. Baseline and perturbed propagation are compared using node-state displacement and edge-flux redistribution.
 
-Applications in the accompanying study
+---
 
-Colorectal cancer
+## Applications in the accompanying study
 
-SOD2-centred perturbation-sensitive dependency reconstruction
+### Colorectal cancer
 
-topology-matched localization testing
+- SOD2-centred perturbation-sensitive dependency reconstruction;
+- topology-matched localisation testing;
+- RNA–TF–RE bridge analysis;
+- receiver-aware communication;
+- GNN–LTC communication pseudotime;
+- LAMB1-centred extracellular-matrix dependency recovery.
 
-RNA–TF–RE bridge analysis
+### Head and neck squamous cell carcinoma
 
-receiver-aware communication
+- SOX2-centred target adaptation;
+- malignant-state-specific response stratification;
+- state-specific communication programmes;
+- virtual SOX2 perturbation;
+- comparison with independent perturbation-prediction baselines.
 
-GNN–LTC communication pseudotime
+### Renal cancer
 
-LAMB1-centred extracellular-matrix dependency recovery
+- joint modelling of untreated renal tumour samples;
+- tumour–vascular dependency reconstruction;
+- endothelial and pericyte state analysis;
+- sample-restricted communication and pseudotime;
+- independent Xenium spatial support.
 
-Head and neck squamous cell carcinoma
+---
 
-SOX2-centred target adaptation
+## Repository structure
 
-malignant-state-specific response stratification
-
-state-specific communication programmes
-
-virtual SOX2 perturbation
-
-comparison with independent perturbation-prediction baselines
-
-Renal cancer
-
-joint modelling of untreated renal tumour samples
-
-tumour–vascular dependency reconstruction
-
-endothelial and pericyte state analysis
-
-sample-restricted communication and pseudotime
-
-independent Xenium spatial support
-
-Repository structure
-
+```text
 IMAS/
 ├── README.md
 ├── CITATION.cff
-├── LICENSE
 ├── pyproject.toml
 ├── environment.yml
 ├── requirements.txt
@@ -191,6 +174,7 @@ IMAS/
 │
 ├── src/
 │   └── imas/
+│       ├── __init__.py
 │       ├── data/
 │       │   ├── multiome.py
 │       │   ├── scrna.py
@@ -236,6 +220,7 @@ IMAS/
 │   └── xenium.yaml
 │
 ├── scripts/
+│   ├── run_demo.py
 │   ├── 01_prepare_multiome.py
 │   ├── 02_build_feature_space.py
 │   ├── 03_train_foundation.py
@@ -246,11 +231,22 @@ IMAS/
 │   └── 08_run_virtual_perturbation.py
 │
 ├── reproduction/
+│   ├── reproduce_main_figures.sh
+│   ├── reproduce_extended_data.sh
 │   ├── main_figures/
+│   │   ├── fig1_foundation.py
+│   │   ├── fig2_sod2.py
+│   │   ├── fig3_propagation.py
+│   │   ├── fig4_lamb1.py
+│   │   ├── fig5_sox2.py
+│   │   └── fig6_renal.py
 │   └── extended_data/
 │
 ├── examples/
 │   └── crc_demo/
+│       ├── README.md
+│       ├── demo_config.yaml
+│       └── small_demo_input/
 │
 ├── manifests/
 │   ├── foundation_datasets.tsv
@@ -259,83 +255,97 @@ IMAS/
 │   └── checksums.tsv
 │
 ├── tests/
+│   ├── test_feature_mapping.py
+│   ├── test_model_forward.py
+│   ├── test_mltd_construction.py
+│   ├── test_communication.py
+│   └── test_reproducibility.py
+│
 └── docs/
+    ├── installation.md
+    ├── data_access.md
+    ├── foundation_training.md
+    ├── target_adaptation.md
+    ├── figure_reproduction.md
+    └── troubleshooting.md
+```
 
-Installation
+---
 
-Recommended environment
+## Installation
 
-Linux
+### Recommended environment
 
-Python 3.10 or later
-
-CUDA-enabled NVIDIA GPU for full training
-
-PyTorch with CUDA support
-
-Conda or Mamba
+- Linux;
+- Python 3.10 or later;
+- CUDA-enabled NVIDIA GPU for full training;
+- PyTorch with CUDA support;
+- Conda or Mamba.
 
 Clone the repository:
 
+```bash
 git clone https://github.com/WUDEYANG-OSU/IMAS.git
 cd IMAS
+```
 
 Create the environment:
 
+```bash
 conda env create -f environment.yml
 conda activate imas
+```
 
 Install IMAS in editable mode:
 
+```bash
 pip install -e .
+```
 
 A pip-only installation can be created with:
 
+```bash
 pip install -r requirements.txt
 pip install -e .
+```
 
-Exact package versions used for the manuscript analyses are recorded in environment.yml and requirements.txt.
+Exact package versions used for the manuscript analyses are recorded in `environment.yml` and `requirements.txt`.
 
-Input data
+---
 
-Matched RNA–ATAC foundation datasets
+## Input data
+
+### Matched RNA–ATAC foundation datasets
 
 Each matched dataset requires:
 
-an RNA count matrix;
+- an RNA count matrix;
+- an ATAC fragment file or peak-by-cell matrix;
+- matched cell barcodes;
+- sample identifiers;
+- gene annotations;
+- peak coordinates.
 
-an ATAC fragment file or peak-by-cell matrix;
+RNA and ATAC cells are paired within biological sample using normalised sample identifiers and harmonised cell barcodes.
 
-matched cell barcodes;
-
-sample identifiers;
-
-gene annotations;
-
-peak coordinates.
-
-RNA and ATAC cells are paired within biological sample using normalized sample identifiers and harmonized cell barcodes.
-
-Target scRNA-seq datasets
+### Target scRNA-seq datasets
 
 Each target dataset requires:
 
-a raw gene-by-cell or cell-by-gene count matrix;
+- a raw gene-by-cell or cell-by-gene count matrix;
+- cell barcodes;
+- sample metadata;
+- optional cell annotations.
 
-cell barcodes;
+Raw counts are retained. Log-normalised values are generated for encoding and downstream summaries, but IMAS does not replace the original matrix.
 
-sample metadata;
+### Configuration files
 
-optional cell annotations.
-
-Raw counts are retained. Log-normalized values are generated for encoding and downstream summaries, but IMAS does not replace the original matrix.
-
-Configuration files
-
-All model and analysis parameters are stored in YAML files under configs/. Dataset-specific paths should be supplied through configuration files rather than hard-coded into source code.
+All model and analysis parameters are stored in YAML files under `configs/`. Dataset-specific paths are supplied through configuration files rather than hard-coded into source code.
 
 Example:
 
+```yaml
 dataset:
   name: CRC_RNA_TO009
   counts: /path/to/counts.h5ad
@@ -350,314 +360,290 @@ model:
 
 output:
   directory: outputs/crc_sod2
+```
 
-Quick start
+---
 
-A lightweight example is provided under examples/crc_demo/.
+## Quick start
 
+A lightweight example is provided under `examples/crc_demo/`.
+
+```bash
 python scripts/run_demo.py \
   --config examples/crc_demo/demo_config.yaml
+```
 
 The demonstration performs:
 
-target-data loading;
-
-typed gene and TF mapping;
-
-target-cell embedding;
-
-MLTD construction;
-
-export of a small RNA–TF–RE support table.
+1. target-data loading;
+2. typed gene and TF mapping;
+3. target-cell embedding;
+4. MLTD construction;
+5. export of a small RNA–TF–RE support table.
 
 The demonstration does not retrain the full pan-cancer foundation.
 
-Full workflow
+---
 
-1. Prepare matched multiomic datasets
+## Full workflow
 
+### 1. Prepare matched multiomic datasets
+
+```bash
 python scripts/01_prepare_multiome.py \
   --config configs/foundation.yaml
+```
 
-2. Build the unified feature space and regulatory prior
+### 2. Build the unified feature space and regulatory prior
 
+```bash
 python scripts/02_build_feature_space.py \
   --config configs/foundation.yaml
+```
 
-3. Train the pan-cancer foundation
+### 3. Train the pan-cancer foundation
 
+```bash
 python scripts/03_train_foundation.py \
   --config configs/foundation.yaml
+```
 
-4. Adapt the foundation to a target dataset
+### 4. Adapt the foundation to a target dataset
 
+```bash
 python scripts/04_adapt_target.py \
   --config configs/target_adaptation.yaml
+```
 
-5. Construct MLTDs
+### 5. Construct MLTDs
 
+```bash
 python scripts/05_construct_mltd.py \
   --config configs/crc_sod2.yaml
+```
 
-6. Run receiver-aware communication analysis
+### 6. Run receiver-aware communication analysis
 
+```bash
 python scripts/06_run_communication.py \
   --config configs/crc_sod2.yaml
+```
 
-7. Run GNN–LTC communication pseudotime
+### 7. Run GNN–LTC communication pseudotime
 
+```bash
 python scripts/07_run_gnn_ltc.py \
   --config configs/crc_sod2.yaml
+```
 
-8. Run target-centred virtual perturbation
+### 8. Run target-centred virtual perturbation
 
+```bash
 python scripts/08_run_virtual_perturbation.py \
   --config configs/crc_sod2.yaml
+```
 
-Reproducing the manuscript figures
+---
+
+## Reproducing the manuscript figures
 
 Main-figure scripts are stored in:
 
+```text
 reproduction/main_figures/
+```
 
 Extended Data scripts are stored in:
 
+```text
 reproduction/extended_data/
+```
 
-The intended commands are:
+Run:
 
+```bash
 bash reproduction/reproduce_main_figures.sh
 bash reproduction/reproduce_extended_data.sh
+```
 
 Each figure workflow uses frozen processed inputs, configuration files and expected-output checksums.
 
-The manuscript figures correspond to:
+| Figure | Analysis |
+|---|---|
+| Fig. 1 | Pan-cancer foundation and target-aware adaptation |
+| Fig. 2 | SOD2 perturbation-sensitive dependency architecture |
+| Fig. 3 | RNA–TF–RE propagation, communication and GNN–LTC |
+| Fig. 4 | LAMB1-centred perturbation-space reconstruction |
+| Fig. 5 | SOX2-centred HNSCC programmes |
+| Fig. 6 | Renal tumour–vascular coupling |
+| Extended Data | Foundation controls, ablations, benchmarks, application-specific validation and Xenium analysis |
 
-Figure
+---
 
-Analysis
+## Computational requirements
 
-Fig. 1
-
-Pan-cancer foundation and target-aware adaptation
-
-Fig. 2
-
-SOD2 perturbation-sensitive dependency architecture
-
-Fig. 3
-
-RNA–TF–RE propagation, communication and GNN–LTC
-
-Fig. 4
-
-LAMB1-centred perturbation-space reconstruction
-
-Fig. 5
-
-SOX2-centred HNSCC programmes
-
-Fig. 6
-
-Renal tumour–vascular coupling
-
-Extended Data
-
-Foundation controls, ablations, benchmarks, application-specific validation and Xenium analysis
-
-Computational requirements
-
-Full foundation training
+### Full foundation training
 
 The manuscript foundation was trained with:
 
-latent dimension: 256
-
-hidden dimension: 512
-
-dropout: 0.1
-
-maximum RNA tokens per cell: 2,048
-
-maximum ATAC tokens per cell: 1,024
-
-RE hash-table size: 2,000,000
-
-contrastive temperature: 0.07
-
-four graph negatives per positive edge
-
-30,000 optimization steps
-
-AdamW optimizer
-
-learning rate: 2 × 10⁻⁴
-
-weight decay: 10⁻²
-
-gradient clipping: 1.0
+- latent dimension: 256;
+- hidden dimension: 512;
+- dropout: 0.1;
+- maximum RNA tokens per cell: 2,048;
+- maximum ATAC tokens per cell: 1,024;
+- RE hash-table size: 2,000,000;
+- contrastive temperature: 0.07;
+- four graph negatives per positive edge;
+- 30,000 optimisation steps;
+- AdamW optimiser;
+- learning rate: 2 × 10⁻⁴;
+- weight decay: 10⁻²;
+- gradient clipping: 1.0.
 
 Full training requires a CUDA-enabled GPU and substantial local or cluster storage for processed multiomic matrices and fragment-derived files.
 
-Target adaptation
+### Target adaptation
 
 The manuscript target-adaptation models used:
 
-16 target-cell groups
+- 16 target-cell groups;
+- rank-32 low-rank updates;
+- 10,000 optimisation steps;
+- learning rate: 7 × 10⁻⁴;
+- cell batches of up to 2,000;
+- gradient clipping: 5.0;
+- validation TF AUC for checkpoint selection.
 
-rank-32 low-rank updates
+The target-scale development and figure-level analyses in the accompanying study were run on a 32-GB NVIDIA GPU. Memory requirements vary with dataset size and configuration. Full foundation training is better suited to multi-GPU or high-memory computing infrastructure.
 
-10,000 optimization steps
+---
 
-learning rate: 7 × 10⁻⁴
-
-cell batches of up to 2,000
-
-gradient clipping: 5.0
-
-validation TF AUC for checkpoint selection
-
-A 32-GB NVIDIA GPU is sufficient for development-scale target adaptation and figure-level analyses, although full foundation training is better suited to a multi-GPU or high-memory computing environment.
-
-Outputs
+## Outputs
 
 Depending on the selected workflow, IMAS writes:
 
-trained foundation checkpoints;
-
-target-adapted checkpoints;
-
-typed feature manifests;
-
-RNA–TF support tables;
-
-RNA–RE and TF–RE support tables;
-
-MLTD node and edge tables;
-
-ligand–receptor communication tables;
-
-receiver-TF support matrices;
-
-cluster and cell communication pseudotime;
-
-virtual perturbation node-state changes;
-
-edge-flux changes;
-
-permutation and bootstrap results;
-
-figure-ready tables.
+- trained foundation checkpoints;
+- target-adapted checkpoints;
+- typed feature manifests;
+- RNA–TF support tables;
+- RNA–RE and TF–RE support tables;
+- MLTD node and edge tables;
+- ligand–receptor communication tables;
+- receiver-TF support matrices;
+- cluster- and cell-level communication pseudotime;
+- virtual-perturbation node-state changes;
+- edge-flux changes;
+- permutation and bootstrap results;
+- figure-ready tables.
 
 Large intermediate objects are excluded from Git and should be stored in a separate data directory.
 
-Reproducibility
+---
+
+## Reproducibility
 
 The manuscript analyses use:
 
-deterministic typed feature identifiers;
-
-explicit sample–barcode pairing keys;
-
-fixed candidate universes;
-
-deterministic data splits;
-
-saved train, validation and test manifests;
-
-fixed random seeds;
-
-frozen YAML configurations;
-
-stored checkpoints;
-
-permutation outputs;
-
-expected-output checksums.
+- deterministic typed feature identifiers;
+- explicit sample–barcode pairing keys;
+- fixed candidate universes;
+- deterministic data splits;
+- saved train, validation and test manifests;
+- fixed random seeds;
+- frozen YAML configurations;
+- stored checkpoints;
+- permutation outputs;
+- expected-output checksums.
 
 Random seed 42 is used unless an ensemble or permutation analysis specifies additional seeds.
 
 The repository includes tests for:
 
-feature mapping;
+- feature mapping;
+- model forward passes;
+- MLTD construction;
+- communication-score calculation;
+- deterministic split recovery;
+- output-schema validation.
 
-model forward passes;
+---
 
-MLTD construction;
-
-communication-score calculation;
-
-deterministic split recovery;
-
-output-schema validation.
-
-Data availability
+## Data availability
 
 Public single-cell datasets used in the manuscript are available from their original repositories. Foundation and validation dataset manifests are provided in:
 
+```text
 manifests/foundation_datasets.tsv
 manifests/validation_datasets.tsv
+```
 
 Public accession codes include datasets from the Gene Expression Omnibus and the 10x Genomics datasets portal. The renal Xenium dataset is distributed by 10x Genomics under the title:
 
-Xenium In Situ Gene and Protein Expression data for FFPE Human Renal Cell Carcinoma
+> Xenium In Situ Gene and Protein Expression data for FFPE Human Renal Cell Carcinoma
 
 The accession for the primary renal tumour dataset will be added before publication.
 
 Raw single-cell matrices, ATAC fragment files, Xenium objects and large checkpoints are not stored directly in this Git repository. Processed data and model files that can be redistributed will be deposited in an archival repository and linked from the release page.
 
-Pretrained models
+---
 
-Pretrained foundation and target-adapted checkpoints will be distributed separately because of file size.
+## Pretrained models
 
-Each released checkpoint will include:
+Pretrained foundation and target-adapted checkpoints are distributed separately because of file size.
 
-model version;
+Each released checkpoint includes:
 
-training configuration;
+- model version;
+- training configuration;
+- source-data manifest;
+- feature-vocabulary checksum;
+- checkpoint checksum;
+- compatible code release.
 
-source-data manifest;
+---
 
-feature-vocabulary checksum;
-
-checkpoint checksum;
-
-compatible code release.
-
-Interpretation and limitations
+## Interpretation and limitations
 
 IMAS is a hypothesis-prioritisation framework.
 
 Model outputs should not be interpreted as:
 
-direct measurements of protein–DNA binding;
-
-experimentally observed ligand–receptor signalling;
-
-chronological developmental time;
-
-causal intervention effects;
-
-complete reconstruction of an unmeasured molecular modality.
+- direct measurements of protein–DNA binding;
+- experimentally observed ligand–receptor signalling;
+- chronological developmental time;
+- causal intervention effects;
+- complete reconstruction of an unmeasured molecular modality.
 
 Virtual perturbation and spatial correspondence require independent experimental validation.
 
-Citation
+---
+
+## Citation
 
 Please cite the associated manuscript when using IMAS:
 
-Wu, D., Yamashiro, T. & Inubushi, T. Matched tumour multiomics resolves perturbation-sensitive regulation. Manuscript in preparation (2026).
+> Wu, D., Yamashiro, T. & Inubushi, T. *Matched tumour multiomics resolves perturbation-sensitive regulation*. Manuscript in preparation (2026).
 
-A machine-readable citation is provided in CITATION.cff. The citation will be updated with the final journal reference and DOI after publication.
+A machine-readable citation is provided in `CITATION.cff`. The citation will be updated with the final journal reference and DOI after publication.
 
-Licence
+---
 
-This repository is currently distributed without an open-source licence. All rights are reserved.
+## Licence
+
+No open-source licence is currently assigned. All rights are reserved.
 
 A formal software licence will be added after institutional and co-author review.
 
-Contact
+---
 
-Deyang WuDepartment of Orthodontics and Dentofacial OrthopedicsGraduate School of Dentistry, Osaka UniversityEmail: scu_wudeyang@163.com
+## Contact
 
-Toshihiro InubushiDepartment of Orthodontics and Dentofacial OrthopedicsGraduate School of Dentistry, Osaka UniversityEmail: inubushitoshihiro.dent@osaka-u.ac.jp
+**Deyang Wu**  
+Department of Orthodontics and Dentofacial Orthopedics  
+Graduate School of Dentistry, Osaka University  
+Email: scu_wudeyang@163.com
+
+**Toshihiro Inubushi**  
+Department of Orthodontics and Dentofacial Orthopedics  
+Graduate School of Dentistry, Osaka University  
+Email: inubushitoshihiro.dent@osaka-u.ac.jp
