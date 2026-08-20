@@ -31,7 +31,9 @@ def normalize_manifest_path(value: object, manifest_dir: str | Path) -> Path | N
     normalized = raw.replace("\\", "/")
     wsl = re.match(r"^/mnt/([A-Za-z])/(.*)$", normalized)
     if wsl:
-        return Path(f"{wsl.group(1).upper()}:\\{wsl.group(2).replace('/', '\\')}")
+        drive = wsl.group(1).upper()
+        tail = wsl.group(2).replace("/", "\\")
+        return Path(drive + ":\\" + tail)
     path = Path(raw)
     return path if path.is_absolute() else (Path(manifest_dir) / path).resolve()
 
