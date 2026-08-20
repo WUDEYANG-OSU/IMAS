@@ -1,10 +1,10 @@
 # IMAS
 
 **IMAS (Integrative Multi-omic Augmentation System)** is a research software
-framework for tumour single-cell multiomics. It combines a fixed pan-cancer
-RNA–ATAC prior, leave-one-dataset-out foundation training, target adaptation,
-multi-layer target dependencies (MLTDs), cell–cell communication, GNN–LTC
-communication pseudotime and virtual perturbation analysis.
+framework for tumour single-cell multiomics. It combines pan-cancer matched
+RNA–ATAC foundation learning, leave-one-dataset-out training, target-specific
+adaptation, multi-layer target dependencies (MLTDs), receiver-aware cell–cell
+communication, GNN–LTC communication pseudotime and virtual perturbation analysis.
 
 > **Repository status:** research code, version 0.3.0. The scientific workflows
 > and benchmark/ablation scripts are included. Large datasets, pan-cancer prior
@@ -24,7 +24,7 @@ communication pseudotime and virtual perturbation analysis.
 - RNA→TF, RNA→RE and RNA→RNA evaluation; CCI and GNN–LTC analysis.
 - Virtual KO/OE, perturbation propagation, response subgroups and NDS mapping.
 - Benchmarking and ablation for MLTD-on/off, multiomic-only/mixed/scRNA-only,
-  Stage-B components, retrieval, AUROC/AUPRC, Spearman and top-k metrics.
+  target-adaptation components, retrieval, AUROC/AUPRC, Spearman and top-k metrics.
 
 ## Repository layout
 
@@ -107,24 +107,37 @@ for its required inputs and writes outputs below the configured runs directory.
 
 ## Benchmark naming boundary
 
-Files labelled **scGPT-style**, **CPA-style**, **GEARS-style**, **MIDAS-like**
-or **multiDGD-style** are task-aligned architectural controls. They are not
-runs of the official packages unless an official implementation and checkpoint
-are explicitly supplied.
+Benchmark comparisons include **scGPT**, **CPA**, **GEARS**, **MIDAS** and
+**multiDGD** where applicable. Dataset-specific benchmark configurations,
+evaluation procedures and source provenance are documented in the accompanying
+scripts and `benchmark_source_provenance.tsv`.
 
 ## Reproducibility scope
 
-The included tests validate reusable modules on synthetic inputs and check
-Python syntax/imports. Full multi-terabyte corpus training and checkpoint-level
-GPU reproduction were not executed inside this packaged environment. See
-[reproducibility notes](docs/reproducibility.md).
+The included tests validate reusable modules, configuration resolution,
+input/output schemas and core workflows using lightweight synthetic inputs.
+Full foundation training requires the complete pan-cancer multiomic corpus and
+dedicated GPU infrastructure and is therefore not part of the lightweight test
+suite. See [reproducibility notes](docs/reproducibility.md).
+## Data availability
 
+The single-cell RNA-sequencing data generated from the eight patient-derived
+renal tumours have been deposited in the NCBI Gene Expression Omnibus under
+accession **GSE344302**.
+
+Public datasets used for foundation training, validation and application
+analyses are documented in the repository manifests,
+`benchmark_source_provenance.tsv` and the accompanying manuscript. Large raw
+datasets and model checkpoints are not stored directly in this Git repository.
 ## Citation
 
-Citation metadata are provided in `CITATION.cff`. Author order, repository URL,
-manuscript title and DOI remain editable placeholders until the project team
-confirms them.
+Citation metadata are provided in `CITATION.cff`. Please cite the accompanying
+manuscript:
 
+> Wu, D., Yamashiro, T. & Inubushi, T. *Matched tumour multiomics resolves perturbation-sensitive regulation*.
+
+The citation information will be updated with the final journal reference and
+DOI upon publication.
 ## License
 
 A license is intentionally not included in this release. Add the selected
