@@ -1,0 +1,33 @@
+seed: 42
+output_root: runs/benchmark
+
+metrics:
+  topk: [5, 10, 20, 50]
+  bootstrap_repeats: 200
+  ece_bins: 10
+  report:
+    - auroc
+    - auprc
+    - mrr
+    - precision_at_10
+    - recall_at_10
+    - ndcg_at_10
+    - lift_at_10
+    - spearman
+    - brier
+    - ece
+
+virtual_ko_style_baselines:
+  naming_note: >-
+    scGPT-style, CPA-style, and GEARS-style are task-aligned controls and are
+    not official package reproductions.
+  target_gene: EGFR
+  scgpt_style:
+    mask_to_zero: true
+  cpa_style:
+    effect_scale: 0.20
+    effect_clip_quantile: 0.95
+  gears_style:
+    neighbor_genes: 50
+    propagation_alpha: 0.20
+    strength_quantile: 0.75

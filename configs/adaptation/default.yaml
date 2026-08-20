@@ -1,0 +1,13 @@
+training:
+  steps: 10000
+  learning_rate: 0.0007
+  rank: 32
+selector:
+  enabled: true
+selected_peak_residual:
+  enabled: true
+  max_peaks: 50000
+  min_edge_frequency: 2
+cluster_correction:
+  enabled: true
+  n_clusters: 16

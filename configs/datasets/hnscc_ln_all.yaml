@@ -1,0 +1,5 @@
+dataset: HNSCC-LN_all
+sample_id: LN_all
+modalities: [RNA]
+stageb_run: runs/frontier_transfer_rna_only_stageB_clusterCorrection_HNSCC_LNall_only/HNSCC-LN_all
+target_gene: SOX2

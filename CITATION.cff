@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "Please cite the IMAS software and the associated manuscript when using this repository."
+title: "IMAS: Integrative Multi-omic Augmentation System"
+type: software
+version: 0.3.0
+date-released: 2026-08-02
+authors:
+  - name: "IMAS Development Team"
+repository-code: "https://github.com/ORG/IMAS"
+abstract: >-
+  IMAS is a computational framework for tumour single-cell multiomic integration,
+  multi-layer target dependencies, cell-cell communication, communication
+  pseudotime, and virtual perturbation analysis.
+keywords:
+  - single-cell multiomics
+  - RNA-ATAC
+  - tumour microenvironment
+  - virtual perturbation

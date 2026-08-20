@@ -1,0 +1,12 @@
+dataset: CRC-Tissue
+sample_id: CRC_RNA_TO009
+same_candidate_universe: true
+compare:
+  - rna_tf_re_bridge
+  - directional_cci
+  - paired_gnn_ltc
+  - fixed_reference_gnn_ltc
+nulls:
+  - tf_label_rewiring
+  - degree_preserving_receiver_rewiring
+  - edge_weight_bootstrap

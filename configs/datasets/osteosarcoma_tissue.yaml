@@ -1,0 +1,4 @@
+dataset: Osteosarcoma-Tissue
+modalities: [RNA, ATAC]
+checkpoint: checkpoints/Osteosarcoma-Tissue/ckpt_last_BASE_global_hashpeak.pt
+stageb_run: runs/frontier_transfer_hash_stageB_selectedPeakResidual_clusterCorrection/Osteosarcoma-Tissue

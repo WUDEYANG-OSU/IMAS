@@ -1,0 +1,8 @@
+weights:
+  expression: 0.34
+  graph_position: 0.33
+  propagation_field: 0.33
+consensus:
+  mean: 0.55
+  maximum: 0.25
+  coverage: 0.20

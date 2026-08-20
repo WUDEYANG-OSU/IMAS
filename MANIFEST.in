@@ -1,0 +1,4 @@
+include README.md
+include CITATION.cff
+recursive-include configs *.yaml *.yml
+recursive-include docs *.md

@@ -1,0 +1,9 @@
+# Global RNA/ATAC projection and ATAC gene-activity defaults
+overwrite_projected: false
+overwrite_priors: false
+rna_topk: null
+atac_topk: null
+edge_chunk_size: 2000000
+gene_activity:
+  keep_only_reachable_genes: true
+  log1p: false

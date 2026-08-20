@@ -1,0 +1,4 @@
+dataset: Glioma-Tissue
+modalities: [RNA, ATAC]
+checkpoint: checkpoints/Glioma-Tissue/ckpt_last_BASE_global_hashpeak.pt
+stageb_run: runs/frontier_transfer_hash_stageB_selectedPeakResidual_clusterCorrection/Glioma-Tissue

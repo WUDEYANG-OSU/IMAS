@@ -1,0 +1,13 @@
+# Pan-cancer prior construction defaults
+re_gene:
+  max_distance: 200000
+  topk_per_peak: 3
+  tau: 50000.0
+tf_re:
+  rank_alpha: 0.5
+  evidence_beta: 1.0
+gene_coexpression:
+  topk: 32
+  min_abs_correlation: 0.1
+assembly:
+  aggregate_duplicates: sum

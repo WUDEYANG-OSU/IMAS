@@ -1,0 +1,12 @@
+datasets:
+  - CRC-Tissue
+  - Glioma-Tissue
+  - Osteosarcoma-Tissue
+regimes:
+  - multiomic_only
+  - mixed
+  - scrna_only
+mixed_max_unpaired_to_paired_ratio: 1.0
+share_cluster_centroids_across_regimes: true
+resume_skip_existing: true
+require_checkpoint_for_skip: true

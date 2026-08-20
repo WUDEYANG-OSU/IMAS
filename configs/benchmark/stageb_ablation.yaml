@@ -1,0 +1,11 @@
+dataset: CRC-Tissue
+modes:
+  - full_stageB
+  - simple_finetune
+  - no_lowrank_adapter
+  - no_cluster_correction
+  - no_selected_peak_residual
+  - no_group_scale_bias
+  - no_cellgroup_adapter
+primary_metric: test_fig2l_diag_offdiag_delta
+seed: 42

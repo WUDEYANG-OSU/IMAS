@@ -1,0 +1,27 @@
+# Copy this file to configs/project.yaml and edit paths, or set environment variables.
+project:
+  name: IMAS
+  version: 0.3.0
+
+paths:
+  # Default is the repository itself. For real analyses, point this to the
+  # workspace containing LLM-WorldWord, networks, runs and checkpoints.
+  project_root: "/path/to/imas-workspace"
+  world_root: "${IMAS_WORLD_ROOT:-LLM-WorldWord}"
+  runs_root: "${IMAS_RUNS_ROOT:-runs}"
+  global_root: "${IMAS_GLOBAL_ROOT:-networks/qc_global_projection}"
+  maps_root: "${IMAS_MAPS_ROOT:-networks/qc_global_projection/maps}"
+  priors_root: "${IMAS_PRIORS_ROOT:-networks/qc_global_projection/priors_cache}"
+  checkpoint_root: "${IMAS_CHECKPOINT_ROOT:-checkpoints}"
+  resources_root: "${IMAS_RESOURCES_ROOT:-resources}"
+  verify_pc_root: "${IMAS_VERIFY_PC_ROOT:-LLM-WorldWord/Verify-PC}"
+  external_sig_llm_root: "${IMAS_SIG_LLM_ROOT:-external/Sig-LLM-Frag}"
+
+runtime:
+  seed: 42
+  device: auto
+  require_cuda: false
+  num_workers: 4
+
+logging:
+  level: INFO
